@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "simple_api"
+version = "0.1.0"
+description = ""
+authors = ["Gustavo de Souza Gonçalves <goncalves.gustavo211@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.73.0"
+uvicorn = {extras = ["standard"], version = "^0.17.4"}
+randnamegen = {path = "../../libs/randnamegen"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
