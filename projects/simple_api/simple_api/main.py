@@ -8,6 +8,7 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
+
 @app.get("/pokemon")
 def read_pokemon():
     return {"pokemon": pokemon.suggest()}
