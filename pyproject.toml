@@ -6,11 +6,15 @@ authors = ["Gustavo de Souza Gonçalves <goncalves.gustavo211@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+randnamegen = {path = "libs/randnamegen"}
+fastapi = "^0.74.0"
+pydocstyle = {extras = ["toml"], version = "^6.1.1"}
 
 [tool.poetry.dev-dependencies]
-flake8 = "^4.0.1"
 pytest = "^7.0.1"
-black = "^22.1.0"
+blue = "^0.7.0"
+pydocstyle = "^6.1.1"
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
