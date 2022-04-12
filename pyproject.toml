@@ -9,7 +9,7 @@ python = "^3.9"
 randnamegen = {path = "libs/randnamegen"}
 fastapi = "^0.74.0"
 pydocstyle = {extras = ["toml"], version = "^6.1.1"}
-prefect = "^1.2.0"
+prefect = ">=2.0b"
 httpx = "^0.22.0"
 pandas = "^1.4.2"
 SQLAlchemy = {extras = ["asyncio"], version = "^1.4.35"}

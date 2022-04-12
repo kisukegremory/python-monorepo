@@ -26,9 +26,7 @@ async def poke_load(pokemons: List[db.Pokemons]):
     uri = "sqlite+aiosqlite:///example.db"
     engine = create_async_engine(uri)
     metadata = db.Pokemons.metadata
-    async_session = sessionmaker(
-        engine=engine, expire_on_commit=False, class_=AsyncSession
-    )
+    async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
     async with engine.begin() as conn:
         await conn.run_sync(metadata.drop_all)
