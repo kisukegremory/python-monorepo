@@ -12,7 +12,8 @@ from pokemon import db, api
 @task
 async def poke_extract() -> List[httpx.Response]:
     poke_requests = [api.get_pokemon_by_id(n) for n in range(1, 200)]
-    return await api.fetch_requests(poke_requests)
+    pokemons = await api.fetch_requests(poke_requests)
+    return pokemons
 
 
 @task
@@ -26,7 +27,9 @@ async def poke_load(pokemons: List[db.Pokemons]):
     uri = "sqlite+aiosqlite:///example.db"
     engine = create_async_engine(uri)
     metadata = db.Pokemons.metadata
-    async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+    async_session = sessionmaker(
+        bind=engine, expire_on_commit=False, class_=AsyncSession
+    )
 
     async with engine.begin() as conn:
         await conn.run_sync(metadata.drop_all)
