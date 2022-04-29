@@ -1,27 +1,33 @@
-from typing import List, Union
+from email.policy import default
+from typing import List
 from src.config import MOST_EMAIL_CASES
-import textdistance
+from textdistance import DamerauLevenshtein
+import click
 
-
-class EmailSuggestion:
-    def __init__(self, email: str) -> None:
-        self.email = email
-
-    def fit(
+class Email:
+    def __init__(
         self,
-        distance_function = textdistance.hamming.normalized_similarity,
+        email: str,
+        distance_function = DamerauLevenshtein().normalized_similarity,
         patterns: List[str] = MOST_EMAIL_CASES
-    ):
+    ) -> None:
 
+        self.email = email
+        self.dommain = email.split("@")[-1]
+        self.patterns = patterns
         self.similarities = {
-            pattern: distance_function(pattern,self.email)
+            pattern: distance_function(pattern,self.dommain)
             for pattern in patterns
         }
+
+    def suggest_email(self):
+        return self.email.replace(self.dommain,self.suggest_dommain())
     
-    def suggest(self):
+    def suggest_dommain(self):
         sims = list(self.similarities.values())
-        if max(sims) > 0.7:
+        if max(sims) > 0.65:
             return list(self.similarities.keys())[sims.index(max(sims))]
+        return self.dommain
 
 
 test_list = ["gamail.com",
@@ -68,7 +74,14 @@ test_list = ["gamail.com",
 "outllok.com",
 ]
 
-for email in test_list:
-    suggestion = EmailSuggestion(email)
-    suggestion.fit(textdistance.DamerauLevenshtein().normalized_similarity)
-    print(f"{email} - {suggestion.suggest()} - {suggestion.similarities}")
+@click.command()
+@click.option('--email', '-e', 'email', required=True, help='Email to suggest')
+@click.option('--verbose', is_flag=True, default=False, help='All Email information')
+def main(email: str, verbose: bool):
+    emailFix = Email(email)
+    print(emailFix.suggest_email())
+    if verbose:
+        print(emailFix.similarities)
+
+if __name__ == "__main__":
+    main()
